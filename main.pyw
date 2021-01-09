@@ -1,9 +1,10 @@
-from os.path import join, abspath
+import sys
+import tkinter as tk
+from os.path import abspath, join
 from random import choice
 
-import tkinter as tk
+from screenshotter import take_screenie
 
-import sys
 try:
     BASE_PATH = sys._MEIPASS
 except Exception:
@@ -81,7 +82,7 @@ class Pet(tk.Tk):
     def rclick_start (self, e): self.holding_rb = True
     def rclick_end   (self, e): self.holding_rb = False
     def lclick_start (self, e):
-        self.holding_lb = True;
+        self.holding_lb = True
         self.init_click_disp_x, self.init_click_disp_y = e.x, e.y
     def lclick_end   (self, e): self.holding_lb = False
     def lclick_hold  (self, e):
@@ -112,11 +113,9 @@ class Pet(tk.Tk):
         if not self.holding_rb: return
         ch = event.char
         if   ch == 'x': self.quit()
-        elif ch == 'c':
-            pass
-        elif ch == 'v':
-            pass
-        elif ch == 'p':
-            pass
+        elif ch == 'p': take_screenie()
+        elif ch == 's': pass
+        elif ch == 'c': pass
+        elif ch == 'v': pass
 
 p = Pet(); p.after(1, p.update); p.mainloop()
