@@ -106,8 +106,8 @@ class Pet(Tk):
         if not self.holding_rb: return
         ch = event.char
         if   ch == 'x': self.quit()
-        elif ch == 'p': take_screenie(SS_PATH)
-        elif ch == 's': pass
+        elif ch == 's': take_screenie(SS_PATH)
+        elif ch == 'p': pass # ping google?
         elif ch == 'c': pass
         elif ch == 'v': pass
 
