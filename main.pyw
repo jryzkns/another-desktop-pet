@@ -28,11 +28,14 @@ class Pet(tk.Tk):
 
         self.dx, self.dy = 0, 0
         self.dragging = False
+        self.holding_rb = False
 
         self.bind("<ButtonPress-1>",   self.lclick_start)
         self.bind("<ButtonRelease-1>", self.lclick_end)
         self.bind("<B1-Motion>",       self.lclick_hold)
-        self.bind("<ButtonPress-3>",   self.start_rclick)
+        self.bind("<ButtonPress-3>",   self.rclick_start)
+        self.bind("<ButtonRelease-3>", self.rclick_end)
+        self.bind("<Key>",             self.handle_key)
 
         self.x, self.y = 100, 100
         self.state = STATE_SLEEP
@@ -68,10 +71,6 @@ class Pet(tk.Tk):
             self.screen_h - 100   if self.y + 100 > self.screen_h else \
             self.y
 
-    def start_rclick(self, event):
-        print("bye!")
-        self.quit()
-
     def lclick_start (self, e): self.dx, self.dy = e.x, e.y; self.dragging = True
     def lclick_end   (self, e): self.dragging = False
     def lclick_hold  (self, e):
@@ -79,6 +78,9 @@ class Pet(tk.Tk):
         self.x, self.y = self.winfo_x() + dx, self.winfo_y() + dy
         self.validate_xy()
         self.geometry(f"100x100+{self.x}+{self.y}")
+
+    def rclick_start (self, event): self.holding_rb = True
+    def rclick_end   (self, event): self.holding_rb = False
 
     def update(self):
 
@@ -97,5 +99,11 @@ class Pet(tk.Tk):
         self.anim_buffer = self.anim_buffer[1:]
 
         self.after(self.update_rate, self.update)
+
+    def handle_key(self, event):
+        if not self.holding_rb: return
+        ch = event.char
+        if ch == 'x':
+            self.quit()
 
 p = Pet(); p.after(1, p.update); p.mainloop()
