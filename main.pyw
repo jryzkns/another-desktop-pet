@@ -33,7 +33,7 @@ class Pet(tk.Tk):
         self.label = tk.Label(self, bd = 0, bg = 'black')
         self.label.pack()
 
-        self.dx, self.dy = 0, 0
+        self.init_click_disp_x, self.init_click_disp_y = 0, 0
         self.holding_lb = False
         self.holding_rb = False
 
@@ -44,7 +44,7 @@ class Pet(tk.Tk):
         self.bind("<ButtonRelease-3>", self.rclick_end)
         self.bind("<Key>",             self.handle_key)
 
-        self.x, self.y = 100, 100
+        self.x, self.y, self.w, self.h = 100, 100, 100, 100
         self.state = STATE_SLEEP
         self.movespeed = 3
 
@@ -72,21 +72,23 @@ class Pet(tk.Tk):
     def validate_xy(self):
         self.x, self.y = \
             0                     if self.x < 0 else \
-            self.screen_w - 100   if self.x + 100 > self.screen_w else \
+            self.screen_w - 100   if self.x + self.w > self.screen_w else \
             self.x, \
             0                     if self.y < 0 else \
-            self.screen_h - 100   if self.y + 100 > self.screen_h else \
+            self.screen_h - 100   if self.y + self.h > self.screen_h else \
             self.y
 
     def rclick_start (self, e): self.holding_rb = True
     def rclick_end   (self, e): self.holding_rb = False
-    def lclick_start (self, e): self.holding_lb = True; self.dx, self.dy = e.x, e.y
+    def lclick_start (self, e):
+        self.holding_lb = True;
+        self.init_click_disp_x, self.init_click_disp_y = e.x, e.y
     def lclick_end   (self, e): self.holding_lb = False
     def lclick_hold  (self, e):
-        dx, dy = e.x - self.dx, e.y - self.dy
+        dx, dy = e.x - self.init_click_disp_x, e.y - self.init_click_disp_y
         self.x, self.y = self.winfo_x() + dx, self.winfo_y() + dy
         self.validate_xy()
-        self.geometry(f"100x100+{self.x}+{self.y}")
+        self.geometry(f"{self.w}x{self.h}+{self.x}+{self.y}")
 
     def update(self):
 
@@ -99,7 +101,7 @@ class Pet(tk.Tk):
             if self.state == STATE_WR: self.x += self.movespeed
 
         self.validate_xy()
-        self.geometry(f'100x100+{self.x}+{self.y}')
+        self.geometry(f'{self.w}x{self.h}+{self.x}+{self.y}')
 
         self.label.configure(image=self.anim_buffer[0])
         self.anim_buffer = self.anim_buffer[1:]
