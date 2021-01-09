@@ -1,4 +1,4 @@
-from os.path import join
+from os.path import join, abspath
 from random import choice
 
 import tkinter as tk
@@ -7,7 +7,7 @@ import sys
 try:
     BASE_PATH = sys._MEIPASS
 except Exception:
-    BASE_PATH = os.path.abspath(".")
+    BASE_PATH = abspath(".")
 
 STATE_IDLE  = 0
 STATE_I2S   = 1
@@ -109,6 +109,12 @@ class Pet(tk.Tk):
     def handle_key(self, event):
         if not self.holding_rb: return
         ch = event.char
-        if ch == 'x': self.quit()
+        if   ch == 'x': self.quit()
+        elif ch == 'c':
+            pass
+        elif ch == 'v':
+            pass
+        elif ch == 'p':
+            pass
 
 p = Pet(); p.after(1, p.update); p.mainloop()
