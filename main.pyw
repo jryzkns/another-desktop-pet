@@ -1,6 +1,13 @@
 from os.path import join
 from random import choice
+
 import tkinter as tk
+
+import sys
+try:
+    BASE_PATH = sys._MEIPASS
+except Exception:
+    BASE_PATH = os.path.abspath(".")
 
 STATE_IDLE  = 0
 STATE_I2S   = 1
@@ -47,12 +54,12 @@ class Pet(tk.Tk):
 
         self.anim_buffer, self.update_rate = [], 250 # ms
         self.frames = {
-            STATE_IDLE  : gif_buffer(join(ASSETS_PATH, "idle.gif"),  5),
-            STATE_I2S   : gif_buffer(join(ASSETS_PATH, "i2s.gif"),   8),
-            STATE_SLEEP : gif_buffer(join(ASSETS_PATH, "sleep.gif"), 3),
-            STATE_S2I   : gif_buffer(join(ASSETS_PATH, "s2i.gif"),   8),
-            STATE_WL    : gif_buffer(join(ASSETS_PATH, "wl.gif"),    8),
-            STATE_WR    : gif_buffer(join(ASSETS_PATH, "wr.gif"),    8)}
+            STATE_IDLE  : gif_buffer(join(BASE_PATH, ASSETS_PATH, "idle.gif"),  5),
+            STATE_I2S   : gif_buffer(join(BASE_PATH, ASSETS_PATH, "i2s.gif"),   8),
+            STATE_SLEEP : gif_buffer(join(BASE_PATH, ASSETS_PATH, "sleep.gif"), 3),
+            STATE_S2I   : gif_buffer(join(BASE_PATH, ASSETS_PATH, "s2i.gif"),   8),
+            STATE_WL    : gif_buffer(join(BASE_PATH, ASSETS_PATH, "wl.gif"),    8),
+            STATE_WR    : gif_buffer(join(BASE_PATH, ASSETS_PATH, "wr.gif"),    8)}
 
         self.state_xsition = {
             STATE_IDLE  : [ STATE_IDLE ] * 3 + [ STATE_I2S, STATE_WL, STATE_WR ],
@@ -81,7 +88,6 @@ class Pet(tk.Tk):
         self.validate_xy()
         self.geometry(f"100x100+{self.x}+{self.y}")
 
-
     def update(self):
 
         if len(self.anim_buffer) == 0:
@@ -103,7 +109,6 @@ class Pet(tk.Tk):
     def handle_key(self, event):
         if not self.holding_rb: return
         ch = event.char
-        if ch == 'x':
-            self.quit()
+        if ch == 'x': self.quit()
 
 p = Pet(); p.after(1, p.update); p.mainloop()

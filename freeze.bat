@@ -1,0 +1,1 @@
+pyinstaller --add-data "assets/*;assets" -F main.pyw

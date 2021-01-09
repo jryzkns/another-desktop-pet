@@ -1,0 +1,6 @@
+**/__pycache__/
+
+# pyinstaller intermediaries
+*.spec
+build/
+dist/
