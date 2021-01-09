@@ -1,0 +1,9 @@
+STATE_IDLE  = 0
+STATE_I2S   = 1
+STATE_SLEEP = 2
+STATE_S2I   = 3
+STATE_WL    = 4
+STATE_WR    = 5
+
+ASSETS_PATH = "assets"
+SS_PATH     = "."

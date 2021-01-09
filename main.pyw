@@ -1,5 +1,7 @@
+from definitions import *
+
 import sys
-import tkinter as tk
+from tkinter import Tk, Label, PhotoImage
 from os.path import abspath, join
 from random import choice
 
@@ -10,20 +12,11 @@ try:
 except Exception:
     BASE_PATH = abspath(".")
 
-STATE_IDLE  = 0
-STATE_I2S   = 1
-STATE_SLEEP = 2
-STATE_S2I   = 3
-STATE_WL    = 4
-STATE_WR    = 5
-
-ASSETS_PATH = "assets"
-
-class Pet(tk.Tk):
+class Pet(Tk):
 
     def __init__(self):
 
-        tk.Tk.__init__(self)
+        Tk.__init__(self)
         self.screen_w = self.winfo_screenwidth()
         self.screen_h = self.winfo_screenheight()
         self.config(highlightbackground = 'black')
@@ -31,7 +24,7 @@ class Pet(tk.Tk):
         self.wm_attributes(
             '-transparentcolor',  'black',
             "-topmost",           1)
-        self.label = tk.Label(self, bd = 0, bg = 'black')
+        self.label = Label(self, bd = 0, bg = 'black')
         self.label.pack()
 
         self.init_click_disp_x, self.init_click_disp_y = 0, 0
@@ -50,7 +43,7 @@ class Pet(tk.Tk):
         self.movespeed = 3
 
         gif_buffer = lambda path, n_frames : \
-            [tk.PhotoImage(file=path, format = f'gif -index {frame_idx}')
+            [PhotoImage(file=path, format=f'gif -index {frame_idx}')
                 for frame_idx in range(n_frames)]
 
         self.anim_buffer, self.update_rate = [], 250 # ms
@@ -113,7 +106,7 @@ class Pet(tk.Tk):
         if not self.holding_rb: return
         ch = event.char
         if   ch == 'x': self.quit()
-        elif ch == 'p': take_screenie()
+        elif ch == 'p': take_screenie(SS_PATH)
         elif ch == 's': pass
         elif ch == 'c': pass
         elif ch == 'v': pass
