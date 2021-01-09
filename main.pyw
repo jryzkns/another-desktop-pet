@@ -27,7 +27,7 @@ class Pet(tk.Tk):
         self.label.pack()
 
         self.dx, self.dy = 0, 0
-        self.dragging = False
+        self.holding_lb = False
         self.holding_rb = False
 
         self.bind("<ButtonPress-1>",   self.lclick_start)
@@ -71,16 +71,16 @@ class Pet(tk.Tk):
             self.screen_h - 100   if self.y + 100 > self.screen_h else \
             self.y
 
-    def lclick_start (self, e): self.dx, self.dy = e.x, e.y; self.dragging = True
-    def lclick_end   (self, e): self.dragging = False
+    def rclick_start (self, e): self.holding_rb = True
+    def rclick_end   (self, e): self.holding_rb = False
+    def lclick_start (self, e): self.holding_lb = True; self.dx, self.dy = e.x, e.y
+    def lclick_end   (self, e): self.holding_lb = False
     def lclick_hold  (self, e):
         dx, dy = e.x - self.dx, e.y - self.dy
         self.x, self.y = self.winfo_x() + dx, self.winfo_y() + dy
         self.validate_xy()
         self.geometry(f"100x100+{self.x}+{self.y}")
 
-    def rclick_start (self, event): self.holding_rb = True
-    def rclick_end   (self, event): self.holding_rb = False
 
     def update(self):
 
@@ -88,7 +88,7 @@ class Pet(tk.Tk):
             self.state = choice(self.state_xsition[self.state])
             self.anim_buffer += self.frames[self.state]
 
-        if not self.dragging:
+        if not self.holding_lb: # dragging
             if self.state == STATE_WL: self.x -= self.movespeed
             if self.state == STATE_WR: self.x += self.movespeed
 
